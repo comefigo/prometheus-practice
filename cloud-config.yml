@@ -2,9 +2,40 @@
 repo_update: true
 repo_upgrade: all
 
+# write_files:
+#   - path: /home/ec2-user/docker/docker-compose.yml
+#     content: |
+#       version: "3.7"
+#       services:
+#         exporter:
+#           image: prom/node-exporter
+#           container_name: node-exporter
+#           ports:
+#             - "9100:9100"
+#           network_mode: "host"
+#           restart: always
+#         cadvisor:
+#           image: google/cadvisor:latest
+#           container_name: cadvisor
+#           volumes:
+#             - /:/rootfs:ro
+#             - /var/run:/var/run:rw
+#             - /sys:/sys:ro
+#             - /var/lib/docker:/var/lib/docker:ro
+#           ports:
+#             - "8080:8080"
+#           privileged: true
+#           networks:
+#             default:
+#               aliases:
+#                 - cadvisor
+#           restart: always
+
 runcmd:
-  - [sh, -c, "amazon-linux-extras install -y docker"]
+  - [sh, -c, "amazon-linux-extras install -y docker git"]
   - sudo systemctl start docker
   - sudo systemctl enable docker
   - [sh, -c, "usermod -a -G docker ec2-user"]
   - [sh, -c, "docker run -d -p 9100:9100 --net='host' --name node-exporter prom/node-exporter"]
+  - [sh, -c, "curl -L 'https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)' -o /usr/local/bin/docker-compose"]
+  - [sh, -c, "chmod +x /usr/local/bin/docker-compose"]

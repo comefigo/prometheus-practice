@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    network_mode: "host"
+    restart: always
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    ports:
+      - "8080:8080"
+    privileged: true
+    networks:
+      default:
+        aliases:
+          - cadvisor
+    restart: always
