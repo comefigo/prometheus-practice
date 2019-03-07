@@ -6,17 +6,19 @@ scrape_configs:
   - job_name: "docker"
     static_configs:
       - targets:
-          - "52.194.232.119:8080"
-          - "52.192.205.188:8080"
+          - "13.113.40.173:8080"
+          - "3.112.17.34:8080"
         labels:
           group: "docker"
+          container_group: "docker"
   - job_name: "docker_hosts"
     static_configs:
       - targets:
-          - "52.194.232.119:9100"
-          - "52.192.205.188:9100"
+          - "13.113.40.173:9100"
+          - "3.112.17.34:9100"
         labels:
           group: "docker_host"
+          container_group: "docker_host"
   - job_name: "ec2_hosts"
     # EC2 Service Discovery Config
     ec2_sd_configs:
